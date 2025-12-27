@@ -1,0 +1,67 @@
+class Solution {
+public:
+
+    int f(vector<vector<int>>& a , vector<vector<int>>& dp)
+    {
+        int x = a.size();
+        //base case 
+        // if (n<0 || n>=x) return 1e9;
+        // if (m==0) return a[m][n];
+
+        // if (dp[m][n]!=-1) return dp[m][n]; 
+
+        // //do all stuffs at that indices 
+        // int top = a[m][n] + f(m-1,n,a,dp);
+        // int dia_left = a[m][n] + f(m-1,n-1,a,dp);
+        // int dia_right = a[m][n] + f(m-1,n+1,a,dp);
+
+        // return dp[m][n] = min({top,dia_left,dia_right});
+
+        //Base case for tabulation 
+        for (int i=0;i<x;i++)
+        {
+            dp[0][i] = a[0][i];
+        }
+
+        int down = 0 , r = 0 , l = 0;
+        for (int i=1;i<x;i++)
+        {
+            for (int j=0;j<x;j++)
+            {
+                down = a[i][j] + dp[i-1][j];
+                l=1e9,r=1e9;
+
+                if (j<x-1)
+                r = a[i][j] + dp[i-1][j+1];
+
+                if (j>0)
+                l = a[i][j] + dp[i-1][j-1];
+
+                dp[i][j] = min({down,r,l});
+            }
+        }
+        
+        int mini = dp[x-1][0];
+        for (int i=0;i<x;i++)
+        {
+            mini = min (mini,dp[x-1][i]);
+        }
+        return mini;
+
+    }
+
+    int minFallingPathSum(vector<vector<int>>& matrix) {
+        int m = matrix.size();;
+        int ans = 1e9;
+
+        vector<vector<int>> dp(m,vector<int>(m,0));
+
+        // for (int i=0;i<m;i++)
+        // {
+        //     ans = min(ans,f(m,i,matrix,dp));
+        // }
+
+        // return ans;
+        return f(matrix,dp);
+    }
+};
