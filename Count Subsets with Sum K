@@ -1,0 +1,28 @@
+long long findWays(vector<int>& arr, int k)
+{
+    int n = arr.size();
+    int MOD = 1e9 + 7;
+    vector<vector<long long>> dp(n, vector<long long>(k + 1, 0));
+    
+    // Base case for index 0
+    dp[0][0] = 1;  // One way to make sum 0: don't pick anything
+    
+    if (arr[0] <= k) {
+        dp[0][arr[0]] = (dp[0][arr[0]] + 1) % MOD;  // Pick arr[0]
+    }
+    
+    // Fill the DP table
+    for (int ind = 1; ind < n; ind++) {
+        for (int sum = 0; sum <= k; sum++) {
+            // Don't pick current element
+            dp[ind][sum] = dp[ind - 1][sum];
+            
+            // Pick current element (if possible)
+            if (arr[ind] <= sum) {
+                dp[ind][sum] = (dp[ind][sum] + dp[ind - 1][sum - arr[ind]]) % MOD;
+            }
+        }
+    }
+    
+    return dp[n - 1][k];
+}
