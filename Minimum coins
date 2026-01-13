@@ -1,0 +1,22 @@
+int minimumCoins(vector<int> a){
+    // Write your code here
+    int n = a.size();;
+
+    if (is_sorted(a.begin() , a.end()))
+    {
+        return 0;
+    }
+    else if (a[0] == n && a[n-1] == 1)
+    {
+        return 3;
+    }
+    else if (a[0] == 1 || a[n-1] == n)
+    {
+        return 1;
+    }
+    else
+    {
+        return 2;
+    }
+    return 0;
+}
