@@ -1,0 +1,30 @@
+class Solution {
+public:
+
+    int f (int i , int j , string& s , string& t , vector<vector<int>>& dp)
+    {
+        //base case0
+        if (j<0) return i+1;
+        if (i<0) return j+1;
+
+        //memoization 
+        if (dp[i][j] != -1) return dp[i][j];
+
+
+        //explore 
+        //match
+        if (s[i] == t[j]) return dp[i][j] = f(i-1,j-1,s,t,dp);
+
+        //dont match
+        //insert , delete , replace
+        return dp[i][j] = 1+min(f(i,j-1,s,t,dp) , min(f(i-1,j,s,t,dp) , f(i-1,j-1,s,t,dp)));
+    }
+
+    int minDistance(string s, string t) {
+        int n = s.length();;
+        int m = t.length();
+
+        vector<vector<int>> dp(n,vector<int>(m,-1));
+        return f(n-1,m-1,s,t,dp);
+    }
+};
